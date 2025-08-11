@@ -1,1 +1,63 @@
 @import "tailwindcss";
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); */
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/thumbs";
+
+:root {
+  --primary: #2d1863;
+}
+
+@theme {
+  --container: 576px;
+  --color-primary: var(--primary);
+  --color-container-body: linear-gradient(270deg, #c9f1ff, #dbd9e9);
+  --shadow-container-body: 1px 1px 25px 0 rgba(88, 88, 88, .35);
+}
+
+@layer base {
+  body {
+    font-family: 'Poppins', Helvetica, sans-serif;
+  }
+}
+
+@layer utilities {
+  .container {
+    max-width: var(--container);
+    min-height: 100vh;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .bg-container-body {
+    background: var(--color-container-body);
+    box-shadow: var(--shadow-container-body);
+  }
+}
+
+/* Custom scrollbar for modals */
+.modal-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
