@@ -1,5 +1,5 @@
 export const STORAGE_KEYS = {
-  USER: 'hk_qr_admin_user',
-  TOKEN: 'hk_qr_admin_token',
-  FORGOT_PASSWORD_EMAIL: 'hk_qr_admin_forgot_password_email',
-} as const
+  USER_SETTING: {
+    RADHIKA_JARI: "689b26d75a9b7e9ebada6123",
+  },
+} as const;

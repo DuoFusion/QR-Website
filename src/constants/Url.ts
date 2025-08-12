@@ -2,10 +2,16 @@ export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const URL = {
   Inquiry: {
-    GetAllInquiry: "/inquiry",
     Add: "/inquiry/add",
-    Delete: "/inquiry/delete",
-    Edit: "/inquiry/edit",
+  },
+  Order: {
+    Add: "/order/add",
+  },
+  UserSetting: {
+    GetAllUserSetting: "/setting",
+  },
+  Product: {
+    GetAllProduct: "/product",
   },
 } as const;
 

@@ -7,18 +7,21 @@
 
 :root {
   --primary: #2d1863;
+  --secondary: #6a7282;
+  --container-body: linear-gradient(270deg, #c9f1ff, #dbd9e9);
 }
 
 @theme {
   --container: 576px;
   --color-primary: var(--primary);
-  --color-container-body: linear-gradient(270deg, #c9f1ff, #dbd9e9);
-  --shadow-container-body: 1px 1px 25px 0 rgba(88, 88, 88, .35);
+  --color-secondary: var(--secondary);
+  --color-container-body: var(--container-body);
+  --shadow-container-body: 1px 1px 25px 0 rgba(88, 88, 88, 0.35);
 }
 
 @layer base {
   body {
-    font-family: 'Poppins', Helvetica, sans-serif;
+    font-family: "Poppins", Helvetica, sans-serif;
   }
 }
 
@@ -29,14 +32,14 @@
     margin-right: auto;
     margin-left: auto;
   }
-  
+
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   .bg-container-body {
     background: var(--color-container-body);
     box-shadow: var(--shadow-container-body);

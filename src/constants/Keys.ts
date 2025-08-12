@@ -1,8 +1,14 @@
 export const KEYS = {
   INQUIRY: {
-    ALL_INQUIRY: "inquiry",
     ADD_INQUIRY: "add-inquiry",
-    DELETE_INQUIRY: "delete-inquiry",
-    EDIT_INQUIRY: "edit-inquiry",
+  },
+  ORDER: {
+    ADD_ORDER: "add-order",
+  },
+  USER_SETTING: {
+    ALL_USER_SETTING: "setting",
+  },
+  PRODUCT: {
+    ALL_PRODUCT: "product",
   },
 } as const;
