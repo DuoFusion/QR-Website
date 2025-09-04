@@ -136,41 +136,43 @@ const RadhikaJari = () => {
           )}
 
           {/* Products Section */}
-          <div className="rounded-lg p-8">
-            <h2 className="text-3xl font-light text-primary text-center">Products</h2>
-            <div className="mt-8">
-              <Swiper
-                modules={[Pagination]}
-                spaceBetween={24}
-                slidesPerView={1}
-                pagination={{ clickable: true }}
-                breakpoints={{
-                  640: { slidesPerView: 2 },
-                }}
-                className="!pb-12"
-              >
-                {All_PRODUCT?.data?.product_data.map((product) => (
-                  <SwiperSlide key={product._id}>
-                    <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="h-52 overflow-hidden">
-                        <img src={product?.image ? product?.image : ""} alt={product.name} className="w-full h-full object-cover" />
+          {(All_PRODUCT?.data?.product_data.length ?? 0) > 0 && (
+            <div className="rounded-lg p-8">
+              <h2 className="text-3xl font-light text-primary text-center">Products</h2>
+              <div className="mt-8">
+                <Swiper
+                  modules={[Pagination]}
+                  spaceBetween={24}
+                  slidesPerView={1}
+                  pagination={{ clickable: true }}
+                  breakpoints={{
+                    640: { slidesPerView: 2 },
+                  }}
+                  className="!pb-12"
+                >
+                  {All_PRODUCT?.data?.product_data.map((product) => (
+                    <SwiperSlide key={product._id}>
+                      <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div className="h-52 overflow-hidden">
+                          <img src={product?.image ? product?.image : ""} alt={product.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="mt-3">
+                          <h3 className="text-lg font-light text-gray-950 mb-2">{product.name}</h3>
+                          <p className="text-gray-600 text-sm mb-3 line-clamp-3">{product.description}</p>
+                          <span className="text-lg font-bold text-black">{product.price}</span>
+                        </div>
                       </div>
-                      <div className="mt-3">
-                        <h3 className="text-lg font-light text-gray-950 mb-2">{product.name}</h3>
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-3">{product.description}</p>
-                        <span className="text-lg font-bold text-black">{product.price}</span>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+              <div className="text-center">
+                <Link to={`/${router.dynamic[WenPath].All_PRODUCT}`} rel="noopener noreferrer" className="text-md text-primary font-medium underline">
+                  View All Products
+                </Link>
+              </div>
             </div>
-            <div className="text-center">
-              <Link to={`/${router.dynamic[WenPath].All_PRODUCT}`} rel="noopener noreferrer" className="text-md text-primary font-medium underline">
-                View All Products
-              </Link>
-            </div>
-          </div>
+          )}
 
           {/* Contact Form */}
           <Inquiries id={settings?._id} />
