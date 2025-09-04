@@ -1,16 +1,15 @@
 import { Button } from "antd";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { FC } from "react";
 import { Mutations } from "../../api";
-import { STORAGE_KEYS } from "../../constants";
 import { InquiryFormValues } from "../../types";
 import { InquiriesSchema } from "../../utils/validationSchemas";
 
-const Inquiries = () => {
+const Inquiries: FC<{ id?: string }> = ({ id }) => {
   const { mutate: createInquiries, isPending: isProductInquiries } = Mutations.useInquiry();
-
   const handleSubmit = async (values: InquiryFormValues, { resetForm }: FormikHelpers<InquiryFormValues>) => {
     const payload = {
-      ...(STORAGE_KEYS.USER_SETTING.RADHIKA_JARI && { settingId: STORAGE_KEYS.USER_SETTING.RADHIKA_JARI }),
+      ...(id && { settingId: id }),
       ...(values.name && { name: values.name }),
       ...(values.email && { email: values.email }),
       ...(values.message && { message: values.message }),

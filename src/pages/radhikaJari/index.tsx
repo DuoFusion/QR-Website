@@ -1,27 +1,32 @@
-import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Queries } from "../../api";
-import { Href, ROUTES, STORAGE_KEYS } from "../../constants";
+import { Href } from "../../constants";
+import { useRoutes } from "../../constants/Routes";
 import Inquiries from "./Inquiries";
+import { useDynamicBranding } from "./useDynamicBranding";
+import { downloadVCard } from "./downloadVCard";
 
 const RadhikaJari = () => {
-  const { data } = Queries.useGetUserSetting({ settingFilter: STORAGE_KEYS.USER_SETTING.RADHIKA_JARI });
-  const { data: All_PRODUCT } = Queries.useGetProduct({ settingFilter: STORAGE_KEYS.USER_SETTING.RADHIKA_JARI });
+  const router = useRoutes();
+  const Location = useLocation();
+  const WenPath = Location.pathname.split("/")[1];
+  const { data } = Queries.useGetUserSetting({ settingFilter: WenPath });
+  const { data: All_PRODUCT } = Queries.useGetProduct({ settingFilter: WenPath });
 
   const settings = data?.data?.setting_data?.[0];
-  const primary = settings?.primary;
-  const secondary = settings?.secondary;
-  const backgroundColor = settings?.backgroundColor;
 
-  useEffect(() => {
-    if (primary && secondary && backgroundColor) {
-      document.documentElement.style.setProperty("--primary", primary);
-      document.documentElement.style.setProperty("--secondary", secondary);
-      document.documentElement.style.setProperty("--container-body", backgroundColor);
-    }
-  }, [primary, secondary, backgroundColor]);
+  useDynamicBranding({ primary: settings?.primary, secondary: settings?.secondary, backgroundColor: settings?.backgroundColor, logoImage: settings?.logoImage, businessName: settings?.title });
 
+  const handleDownload = () => {
+    downloadVCard({
+      name: settings?.title || "Radhika Jari",
+      phone: settings?.phoneNumber || "+1111122222",
+      email: settings?.email || "example@gmail.com",
+      fileName: `${(settings?.title || "contact").toLowerCase().replace(/\s+/g, "-")}.vcf`,
+    });
+  };
   return (
     <div className="container">
       <div className="min-h-screen bg-container-body relative ">
@@ -161,23 +166,23 @@ const RadhikaJari = () => {
               </Swiper>
             </div>
             <div className="text-center">
-              <a href={ROUTES.RADHIKA_JARI.All_PRODUCT} rel="noopener noreferrer" className="text-md text-primary font-medium underline">
+              <Link to={`/${router.dynamic[WenPath].All_PRODUCT}`} rel="noopener noreferrer" className="text-md text-primary font-medium underline">
                 View All Products
-              </a>
+              </Link>
             </div>
           </div>
 
           {/* Contact Form */}
-          <Inquiries />
+          <Inquiries id={settings?._id} />
         </div>
 
         {/* Sticky Action Buttons */}
         <div className="fixed inset-x-0 bottom-0 transform -translate-y-1/2 z-50">
           <div className="flex flex-row space-y-3 justify-center">
-            <a href="/radhika-jari.vcf" download="radhika-jari.vcf" target="_blank" rel="noopener noreferrer" className="bg-primary text-white p-3 shadow-lg rounded-lg transition-colors text-center whitespace-nowrap w-50">
+            <button onClick={handleDownload} rel="noopener noreferrer" className="bg-primary text-white p-3 shadow-lg rounded-lg transition-colors text-center whitespace-nowrap w-50">
               <i className="fas fa-clipboard-user  mr-2"></i>
               Add to contact
-            </a>
+            </button>
           </div>
         </div>
       </div>

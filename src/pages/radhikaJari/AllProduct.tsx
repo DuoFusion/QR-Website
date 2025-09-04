@@ -1,40 +1,34 @@
 import { Button } from "antd";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mutations, Queries } from "../../api";
-import { ROUTES, STORAGE_KEYS } from "../../constants";
+import { useRoutes } from "../../constants/Routes";
 import { OrderFormValues } from "../../types";
 import { OrderSchema } from "../../utils/validationSchemas";
-
-
+import { useDynamicBranding } from "./useDynamicBranding";
 
 const AllProduct = () => {
+  const router = useRoutes();
   const navigate = useNavigate();
+  const Location = useLocation();
+  const WenPath = Location.pathname.split("/")[1];
+
   const { mutate: createOrder, isPending: isProductOrder } = Mutations.useOrder();
-  const { data: All_PRODUCT } = Queries.useGetProduct({ settingFilter: STORAGE_KEYS.USER_SETTING.RADHIKA_JARI });
+  const { data: All_PRODUCT } = Queries.useGetProduct({ settingFilter: WenPath });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   const selectedProduct = useMemo(() => All_PRODUCT?.data?.product_data.find((p) => p._id === selectedProductId) || null, [selectedProductId]);
-  
-  const { data } = Queries.useGetUserSetting({ settingFilter: STORAGE_KEYS.USER_SETTING.RADHIKA_JARI });
+
+  const { data } = Queries.useGetUserSetting({ settingFilter: WenPath });
 
   const settings = data?.data?.setting_data?.[0];
-  const primary = settings?.primary;
-  const secondary = settings?.secondary;
-  const backgroundColor = settings?.backgroundColor;
 
-  useEffect(() => {
-    if (primary && secondary && backgroundColor) {
-      document.documentElement.style.setProperty("--primary", primary);
-      document.documentElement.style.setProperty("--secondary", secondary);
-      document.documentElement.style.setProperty("--container-body", backgroundColor);
-    }
-  }, [primary, secondary, backgroundColor]);
+  useDynamicBranding({ primary: settings?.primary, secondary: settings?.secondary, backgroundColor: settings?.backgroundColor, logoImage: settings?.logoImage, businessName: settings?.title });
 
   const openModal = (productId: string) => {
     setSelectedProductId(productId);
@@ -48,7 +42,7 @@ const AllProduct = () => {
 
   const handleSubmit = (values: OrderFormValues, { resetForm }: FormikHelpers<OrderFormValues>) => {
     const payload = {
-      ...(STORAGE_KEYS.USER_SETTING.RADHIKA_JARI && { settingId: STORAGE_KEYS.USER_SETTING.RADHIKA_JARI }),
+      ...(settings?._id && { settingId: settings?._id }),
       ...(selectedProductId && { productId: selectedProductId?.toString() }),
       ...(values.name && { name: values.name }),
       ...(values.email && { email: values.email }),
@@ -75,7 +69,7 @@ const AllProduct = () => {
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <h4 className="text-primary text-2xl sm:text-3xl font-semibold">Product</h4>
-                <button type="button" onClick={() => navigate(ROUTES.RADHIKA_JARI.WEB)} className="btn bg-primary text-white px-4 py-2 rounded-md">
+                <button type="button" onClick={() => navigate(`/${router.dynamic[WenPath].WEB}`)} className="btn bg-primary text-white px-4 py-2 rounded-md">
                   Back
                 </button>
               </div>
